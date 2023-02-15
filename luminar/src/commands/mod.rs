@@ -1,4 +1,2 @@
-pub mod help;
-pub mod register;
-pub mod commands;
-pub mod about;
+pub mod owner;
+pub mod general;
