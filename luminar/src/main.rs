@@ -2,7 +2,10 @@ mod commands;
 mod events;
 mod utils;
 
-use crate::commands::{commands::commands, help::help, register::register, about::about};
+use crate::commands::{
+    general::{about, help, userinfo},
+    owner::{commands, register, shutdown},
+};
 use crate::utils::{
     command::{post_command, pre_command},
     luminar::LuminarData,
@@ -16,7 +19,7 @@ use poise::serenity_prelude as serenity;
 #[tokio::main]
 async fn main() {
     let options = poise::FrameworkOptions {
-        commands: vec![help(), register(), commands(), about()],
+        commands: vec![help(), register(), commands(), about(), userinfo(), shutdown()],
         event_handler: |ctx, event, framework, user_data| {
             Box::pin(event_handler(ctx, event, framework, user_data))
         },
