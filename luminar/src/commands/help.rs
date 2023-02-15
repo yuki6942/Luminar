@@ -2,6 +2,7 @@ use crate::utils::luminar::{LuminarContext, LuminarError};
 
 // Show a help menu
 #[poise::command(prefix_command, slash_command)]
+/// Shows the help menu
 pub async fn help(
     ctx: LuminarContext<'_>,
     #[description = "Command to display specific information about"] command: Option<String>,
