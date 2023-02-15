@@ -17,7 +17,7 @@ pub async fn about(ctx: LuminarContext<'_>) -> LuminarResult {
                     ("__Language__", "Rust", true),
                     ("__Authors__", authors, true),
                 ])
-                .colour(Colour::BLITZ_BLUE)
+                .colour(Colour::FADED_PURPLE)
         })
         .components(|b| {
             b.create_action_row(|b| {
@@ -68,7 +68,7 @@ pub async fn userinfo(
     ctx.send(|e| {
         e.embed(|e| {
             e.title(format!("Information about {}", u.name))
-                .colour(Colour::BLITZ_BLUE)
+                .colour(Colour::FADED_PURPLE)
                 .fields(vec![
                     ("Username", &u.name, true),
                     ("ID", &u.id.to_string(), true),
