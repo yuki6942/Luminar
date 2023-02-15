@@ -754,6 +754,7 @@ dependencies = [
  "env_logger",
  "log",
  "poise",
+ "serenity",
  "text-colorizer",
  "tokio",
 ]

@@ -1,7 +1,7 @@
 use crate::utils::luminar::{LuminarContext, LuminarError};
 
 // Show a help menu
-#[poise::command(prefix_command, slash_command)]
+#[poise::command(prefix_command, slash_command, category="General")]
 /// Shows the help menu
 pub async fn help(
     ctx: LuminarContext<'_>,
@@ -10,7 +10,6 @@ pub async fn help(
     let config = poise::builtins::HelpConfiguration {
         extra_text_at_bottom: "\
 Hello! こんにちは！Hola! Bonjour! 您好! 안녕하세요~
-
 If you want more information about a specific command, just pass the command as argument.",
         ..Default::default()
     };
