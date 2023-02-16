@@ -12,10 +12,11 @@ pub async fn about(ctx: LuminarContext<'_>) -> LuminarResult {
         b.embed(|b| {
             b.title("About Luminar")
                 .fields(vec![
-                    ("__Version__", version, true),
-                    ("__Library__", "Serenity, poise", true),
-                    ("__Language__", "Rust", true),
-                    ("__Authors__", authors, true),
+                    ("__Version__", version, false),
+                    ("__Library__", "Serenity", false),
+                    ("__Command Framework__", "Poise", false),
+                    ("__Language__", "Rust", false),
+                    ("__Authors__", authors, false),
                 ])
                 .colour(Colour::FADED_PURPLE)
         })
@@ -64,22 +65,31 @@ pub async fn userinfo(
     #[description = "The user to get the information from"] user: Option<serenit::User>,
 ) -> LuminarResult {
     let u = user.as_ref().unwrap_or_else(|| ctx.author());
+    let bot_str = if u.bot { "Yes" } else { "No" }.to_owned();
+    let created_at = format!("<t:{}:R>", &u.created_at().timestamp()).to_owned();
+
+    let mut author = serenit::CreateEmbedAuthor::default();
+    author.name(&u.name);
+    author.icon_url(u.avatar_url().unwrap_or_else(|| u.default_avatar_url()));
+
+    let global_avatar_text = format!("[Link]({})", &u.avatar_url().unwrap_or_else(|| u.default_avatar_url()));
 
     ctx.send(|e| {
         e.embed(|e| {
-            e.title(format!("Information about {}", u.name))
-                .colour(Colour::FADED_PURPLE)
-                .fields(vec![
-                    ("Username", &u.name, true),
-                    ("ID", &u.id.to_string(), true),
-                    ("Bot", &u.bot.to_string(), true),
-                ])
-                .field(
-                    "Created at",
-                    format!("<t:{}:R>", u.created_at().timestamp()),
-                    true,
-                )
-                .thumbnail(u.avatar_url().unwrap_or_else(|| u.default_avatar_url()))
+            e.set_author(author)
+            .title("Account information")
+            .colour(Colour::FADED_PURPLE)
+            .fields(vec![
+                ("__Basics__", "", false),
+                ("Full name:", &u.tag(), false),
+                ("ID", &u.id.to_string(), false),
+                ("Bot?", &bot_str, false),
+                ("Created at", &created_at, false),
+                ("Global avatar", &global_avatar_text, false),
+                
+            ])
+            .thumbnail(u.avatar_url().unwrap_or_else(|| u.default_avatar_url()))
+
         })
     })
     .await?;
