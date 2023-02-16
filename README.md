@@ -4,7 +4,7 @@
 
 Welcome to the Luminar Discord bot!
 
-The bot is made with [poise](https://github.com/serenity-rs/poise/).
+The bot is made with [serenity](https://github.com/serenity-rs/) using the [poise](https://github.com/serenity-rs/poise/) command framework.
 
 ## Contributing 
 
