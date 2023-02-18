@@ -1,7 +1,6 @@
 mod commands;
 mod events;
 mod utils;
-
 use crate::commands::{
     general::{about, help, userinfo},
     owner::{commands, register, shutdown},
@@ -26,12 +25,12 @@ async fn main() {
         on_error: |error| Box::pin(on_error(error)),
         pre_command: |ctx| Box::pin(pre_command(ctx)),
         post_command: |ctx| Box::pin(post_command(ctx)),
-
+    
         // Options specific to prefix commands, i.e. commands invoked via chat messages
         prefix_options: poise::PrefixFrameworkOptions {
             prefix: Some(String::from("~")),
 
-            mention_as_prefix: false,
+            mention_as_prefix: true,
             // An edit tracker needs to be supplied here to make edit tracking in commands work
             edit_tracker: Some(poise::EditTracker::for_timespan(
                 std::time::Duration::from_secs(3600 * 3),

@@ -40,26 +40,59 @@ pub async fn about(ctx: LuminarContext<'_>) -> LuminarResult {
     Ok(())
 }
 
-// Show a help menu
-#[poise::command(prefix_command, slash_command, category = "General")]
+#[poise::command(prefix_command, slash_command, track_edits, category = "General")]
 /// Shows the help menu
 pub async fn help(
     ctx: LuminarContext<'_>,
-    #[description = "Command to display specific information about"] command: Option<String>,
+    #[description = "Specific command to show help about"]
+    #[autocomplete = "poise::builtins::autocomplete_command"]
+    command: Option<String>,
 ) -> LuminarResult {
-    let config = poise::builtins::HelpConfiguration {
-        extra_text_at_bottom: "\
-Hello! こんにちは！Hola! Bonjour! 您好! 안녕하세요~
-If you want more information about a specific command, just pass the command as argument.",
-        ..Default::default()
-    };
+    poise::builtins::help(
+        ctx,
+        command.as_deref(),
+        poise::builtins::HelpConfiguration {
+            extra_text_at_bottom: "\
+To get information about a specific command, use `help <command>`.",
+            show_context_menu_commands: true,
+            ..Default::default()
+        },
+    )
+    .await?;
+    Ok(())
+}
 
-    poise::builtins::help(ctx, command.as_deref(), config).await?;
+/* TODO: Make this into the new help command with an select menu, get automatically the categories and commands and filter if,
+    It has hide_in_help or a owner_only check
+    Also check if the user who invoked the command is the user that uses the interaction on the select menu
+
+
+// poise slash and prefix command named commands
+#[poise::command(prefix_command, slash_command, category = "General")]
+pub async fn show(ctx: LuminarContext<'_>) -> LuminarResult {
+    // Send a embed which has a introduction to the bot and list all command categories
+    ctx.send(|b| {
+        b.embed(|b| {
+            b.title("Luminar - Help")
+                .fields(vec![
+                    ("__Categories__", "General", false),
+                    ("__Prefix__", "`~` or `/`", false),
+                    ("__Invite__", "[Click here](https://discord.com/api/oauth2/authorize?client_id=1075052879443931208&permissions=8&scope=bot%20applications.commands)", false),
+                    ("__Support__", "[Click here](https://discord.gg/EnEDSYWvUm)", false),
+                    ("__GitHub__", "[Click here](https://github.com/yuki6942/Luminar)", false),
+                ])
+                .colour(Colour::FADED_PURPLE)
+        }) 
+    })
+    .await?;
 
     Ok(())
 }
 
+ */
+
 #[poise::command(prefix_command, slash_command, category = "General")]
+/// Shows some information a specifc user
 pub async fn userinfo(
     ctx: LuminarContext<'_>,
     #[description = "The user to get the information from"] user: Option<serenit::User>,
