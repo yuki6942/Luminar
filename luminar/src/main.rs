@@ -1,9 +1,8 @@
 mod commands;
 mod events;
 mod utils;
-
 use crate::commands::{
-    general::{about, help, userinfo},
+    general::{about, help, userinfo, show},
     owner::{commands, register, shutdown},
 };
 use crate::utils::{
@@ -19,19 +18,19 @@ use poise::serenity_prelude as serenity;
 #[tokio::main]
 async fn main() {
     let options = poise::FrameworkOptions {
-        commands: vec![help(), register(), commands(), about(), userinfo(), shutdown()],
+        commands: vec![help(), register(), commands(), about(), userinfo(), shutdown(), show()],
         event_handler: |ctx, event, framework, user_data| {
             Box::pin(event_handler(ctx, event, framework, user_data))
         },
         on_error: |error| Box::pin(on_error(error)),
         pre_command: |ctx| Box::pin(pre_command(ctx)),
         post_command: |ctx| Box::pin(post_command(ctx)),
-
+    
         // Options specific to prefix commands, i.e. commands invoked via chat messages
         prefix_options: poise::PrefixFrameworkOptions {
             prefix: Some(String::from("~")),
 
-            mention_as_prefix: false,
+            mention_as_prefix: true,
             // An edit tracker needs to be supplied here to make edit tracking in commands work
             edit_tracker: Some(poise::EditTracker::for_timespan(
                 std::time::Duration::from_secs(3600 * 3),
