@@ -1,5 +1,5 @@
 use crate::utils::luminar::{LuminarContext, LuminarResult};
-use poise::serenity_prelude::{self as serenit};
+use poise::serenity_prelude::{self as serenit, UserPublicFlags};
 use serenity::utils::Colour;
 
 #[poise::command(prefix_command, slash_command, category = "General")]
@@ -62,32 +62,6 @@ To get information about a specific command, use `help <command>`.",
     Ok(())
 }
 
-/* TODO: Make this into the new help command with an select menu, get automatically the categories and commands and filter if,
-    It has hide_in_help or a owner_only check
-    Also check if the user who invoked the command is the user that uses the interaction on the select menu
-
-#[poise::command(prefix_command, slash_command, category = "General")]
-pub async fn show(ctx: LuminarContext<'_>) -> LuminarResult {
-    // Send a embed which has a introduction to the bot and list all command categories
-    ctx.send(|b| {
-        b.embed(|b| {
-            b.title("Luminar - Help")
-                .fields(vec![
-                    ("__Categories__", "General", false),
-                    ("__Prefix__", "`~` or `/`", false),
-                    ("__Invite__", "[Click here](https://discord.com/api/oauth2/authorize?client_id=1075052879443931208&permissions=8&scope=bot%20applications.commands)", false),
-                    ("__Support__", "[Click here](https://discord.gg/EnEDSYWvUm)", false),
-                    ("__GitHub__", "[Click here](https://github.com/yuki6942/Luminar)", false),
-                ])
-                .colour(Colour::FADED_PURPLE)
-        })
-    })
-    .await?;
-
-    Ok(())
-}
-
- */
 
 #[poise::command(prefix_command, slash_command, category = "General")]
 /// Shows some information an user
@@ -164,13 +138,6 @@ pub async fn userinfo(
         .join(", ")
         .to_owned();
 
-    /* TODO: Make this work lol (Get every bade and show the emoji)
-        let badges: String = if u.public_flags.is_some() {
-            format!("{:?}", &u.public_flags.unwrap_or_default().to_owned())
-        } else {
-            format!("{} has no public badges.", &u.name)
-        };
-    */
 
     let join_date = format!(
         "<t:{}:F>",
@@ -194,7 +161,7 @@ pub async fn userinfo(
             .timestamp()
             .to_owned()
     );
-
+  
     ctx.send(|e| {
         e.embed(|e| {
             e.set_author(author)
@@ -216,7 +183,7 @@ pub async fn userinfo(
                     ("Boost status:", &boost_status, false),
                     ("Roles:", &roles, false),
                     ("Server owner?", &guild_owner, false),
-                    ("__Badges__", ""/*&badges*/, false),
+                    ("__Badges__", "", false),
                 ])
                 .thumbnail(u.avatar_url().unwrap_or_else(|| u.default_avatar_url()))
         })
